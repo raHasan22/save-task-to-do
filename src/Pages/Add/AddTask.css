@@ -1,0 +1,14 @@
+.form-floating .add-task {
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px solid black;
+}
+.form-floating .add-task:focus {
+    box-shadow: none;
+    border-color:2px solid blue;
+}
+.form-floating .add-task:focus + label {
+    font-weight: 700;
+    color: blue;
+    transition: all 0.2s;
+}
