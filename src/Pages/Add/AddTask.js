@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './AddTask.css';
 import { FaPlus, FaTimes } from "react-icons/fa";
+import { AuthContext } from '../../context/AuthProvider';
 
 const AddTask = () => {
+
+    const { user } = useContext(AuthContext);
     
     const addTaskDetail = event =>{
         event.preventDefault();
@@ -21,6 +24,9 @@ const AddTask = () => {
         <div className='mx-5'>
             <div className='my-3'>
                 <h4 className='text-center text-bold'>Add <span className='text-warning'>Task</span></h4>
+                {
+                    user?.uid ? <p className='text-center'>Add your task</p>:<p className='text-center'>User must be logged in to add a task</p>
+                }
 
             </div>
             <form className='mb-5' onSubmit={addTaskDetail}>
@@ -37,7 +43,7 @@ const AddTask = () => {
                     <label htmlFor='floatingLink'>Add Image Link if Needed</label>
                 </div>
                 <div className="form-floating mb-3" style={{display:'none'}}>
-                    <input name='completed' type='text' className='form-control add-task' value='false' id='floatingTF' ></input>
+                    <input name='completed' type='text' className='form-control add-task' value='false' id='floatingTF' readOnly></input>
                     <label htmlFor='floatingTF'>Completed</label>
                 </div>
                 <div className="form-floating mb-3">
@@ -48,7 +54,10 @@ const AddTask = () => {
                     <input name='time' type='time' className='form-control add-task' id='floatingTime' placeholder='Time' required></input>
                     <label htmlFor='floatingTime'>Time</label>
                 </div>
-                <button  type='submit' className='btn btn-outline-success btn-lg me-3'><FaPlus></FaPlus> Add</button>
+                {
+                    user?.uid ? <button  type='submit' className='btn btn-outline-success btn-lg me-3'><FaPlus></FaPlus> Add</button> 
+                    : <button  type='submit' className='btn btn-outline-success btn-lg me-3' disabled><FaPlus></FaPlus> Add</button> 
+                }
                 <button  type='reset' className='btn btn-outline-danger btn-lg me-3'><FaTimes></FaTimes> Cancel</button>
             </form>
         </div>

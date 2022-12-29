@@ -1,13 +1,39 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { toast } from 'react-hot-toast';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../context/AuthProvider';
 
 const SignUp = () => {
+
+    const { createUser } = useContext(AuthContext);
+    const location = useLocation();
+    const navigate = useNavigate();
+  
+    const from = location.state?.from?.pathname || '/';
+
+    const handleSignup = event => {
+        event.preventDefault();
+        const email = event.target.email.value;
+        const password = event.target.password.value;
+        createUser(email, password)
+        .then(res => {
+            const user = res.user;
+            toast.success(`Successfully logged in ${user.email}`);
+            event.target.reset();
+            navigate(from, {replace: true});
+        })
+        .catch(err => {
+            toast.error(`Not Successful ${err.message}`);
+            event.target.reset();
+        });
+    };
+
     return (
         <div className='mx-5 m w-75 mx-auto'>
         <div className='my-5'>
             <h3 className='text-center text-bold'>Sign<span className='text-warning'>Up</span></h3>
         </div>
-        <form>
+        <form onSubmit={handleSignup}>
         <div className="form-floating mb-4">
                 <input name='email' type='email' className='form-control' id='floatingEmail' placeholder='Email' required></input>
                 <label htmlFor='floatingInput'>Email</label>
