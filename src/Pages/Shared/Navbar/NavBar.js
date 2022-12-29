@@ -27,8 +27,8 @@ const NavBar = () => {
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
             <Nav.Item className='mx-2'><Link to='/add' className='text-decoration-none text-dark'>Add-Task</Link></Nav.Item>
-            <Nav.Item className='mx-2'><Link to='/add' className='text-decoration-none text-dark'>My-Task</Link></Nav.Item>
-            <Nav.Item className='mx-2'><Link to='/add' className='text-decoration-none text-dark'>Completed-Task</Link></Nav.Item>
+            <Nav.Item className='mx-2'><Link to='/mytask' className='text-decoration-none text-dark'>My-Task</Link></Nav.Item>
+            <Nav.Item className='mx-2'><Link to='/completed' className='text-decoration-none text-dark'>Completed-Task</Link></Nav.Item>
           </Nav>
           <Nav className="me-auto d-md-flex flex-lg-row flex-grow-1 justify-content-lg-end">
             {

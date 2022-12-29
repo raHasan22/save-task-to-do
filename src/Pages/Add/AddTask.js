@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import './AddTask.css';
 import { FaPlus, FaTimes } from "react-icons/fa";
 import { AuthContext } from '../../context/AuthProvider';
+import { toast } from 'react-hot-toast';
 
 const AddTask = () => {
 
@@ -16,8 +17,24 @@ const AddTask = () => {
         const completed = task.completed.value;
         const date = task.date.value;
         const time = task.time.value;
+        const tasKDetail = {email: user.email, title, detail, imageLink, completed, date, time}
 
-        console.log(title, detail, imageLink, completed, date, time);
+        console.log(tasKDetail);
+        fetch('http://localhost:5000/tasks', {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify(tasKDetail)
+            })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+               if(data.acknowledged){
+                task.reset();
+                toast.success('Added Successfully');
+               }
+            })
     }
 
     return (
