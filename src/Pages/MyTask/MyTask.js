@@ -1,14 +1,19 @@
 import { useQuery } from '@tanstack/react-query';
-import React, { useContext } from 'react';
-import { Button, Card } from 'react-bootstrap';
+import React, { useContext, useState } from 'react';
+import { Button, Card, Modal } from 'react-bootstrap';
 import { AuthContext } from '../../context/AuthProvider';
 import { FaCheck,FaTimes } from "react-icons/fa";
 import { toast } from 'react-hot-toast';
 
 const MyTask = () => {
+    const [show, setShow] = useState(false);
+    const [details, setDetails] = useState(null)
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
     const { user } = useContext(AuthContext);
     
-    const url = `http://localhost:5000/tasks/false?email=${user?.email}`;
+    const url = `https://task-manager-server-kappa.vercel.app/tasks/false?email=${user?.email}`;
 
     const { data: tasks = [], refetch } = useQuery({
         queryKey: ['tasks', user?.email],
@@ -19,8 +24,16 @@ const MyTask = () => {
         }
     })
 
+    const handleDetails = id => {
+        fetch(`https://task-manager-server-kappa.vercel.app/tasks/false/${id}`)
+        .then(res => res.json())
+        .then(data => setDetails(data));
+
+        handleShow();
+    }
+
     const handleTaskDelete = id => {
-        fetch(`http://localhost:5000/tasks/delete/${id}`,{
+        fetch(`https://task-manager-server-kappa.vercel.app/tasks/delete/${id}`,{
             method: 'DELETE'
         })
         .then(res => res.json())
@@ -32,7 +45,7 @@ const MyTask = () => {
         })
     }
     const handleCompleted = id => {
-        fetch(`http://localhost:5000/tasks/true/${id}`,{
+        fetch(`https://task-manager-server-kappa.vercel.app/tasks/true/${id}`,{
             method: 'PUT'
         })
         .then(res => res.json())
@@ -55,13 +68,30 @@ const MyTask = () => {
                         <Card.Title>{task.title}</Card.Title>
                         
                         <div className='d-flex flex-row justify-content-between'>
-                        <Button variant="primary">Details</Button>
+                        <Button variant="primary" onClick={() => handleDetails(task._id)}>Details</Button>
                         <Button onClick={() => handleCompleted(task._id)} variant="success"><FaCheck></FaCheck> Completed</Button>
                         <Button onClick={() => handleTaskDelete(task._id)} variant="danger"><FaTimes></FaTimes> Delete</Button>
                         </div>
+                        
                     </Card.Body>
-                    </Card>)}
+                    
+                    </Card>
+                    
+                    )}
             </div>
+            <Modal show={show} onHide={handleClose}>
+                            <Modal.Header closeButton>
+                            <Modal.Title>{details?.title}</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>{details?.detail}</Modal.Body>
+                            <Modal.Body>{details?.date}</Modal.Body>
+                            <Modal.Body>{details?.time}</Modal.Body>
+                            <Modal.Footer>
+                            <Button variant="secondary" onClick={handleClose}>
+                                Close
+                            </Button>
+                            </Modal.Footer>
+                        </Modal>
         </div>
     );
 };

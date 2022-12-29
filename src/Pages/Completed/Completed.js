@@ -8,7 +8,7 @@ import { toast } from 'react-hot-toast';
 const Completed = () => {
     const { user } = useContext(AuthContext);
     
-    const url = `http://localhost:5000/tasks/true?email=${user?.email}`;
+    const url = `https://task-manager-server-kappa.vercel.app/tasks/true?email=${user?.email}`;
 
     const { data: tasks = [], refetch } = useQuery({
         queryKey: ['tasks', user?.email],
@@ -20,7 +20,7 @@ const Completed = () => {
     })
 
     const handleComTaskDelete = id => {
-        fetch(`http://localhost:5000/tasks/delete/${id}`,{
+        fetch(`https://task-manager-server-kappa.vercel.app/tasks/delete/${id}`,{
             method: 'DELETE'
         })
         .then(res => res.json())
@@ -33,7 +33,7 @@ const Completed = () => {
     }
 
     const handleNotCompleted = id => {
-        fetch(`http://localhost:5000/tasks/false/${id}`,{
+        fetch(`https://task-manager-server-kappa.vercel.app/tasks/false/${id}`,{
             method: 'PUT'
         })
         .then(res => res.json())

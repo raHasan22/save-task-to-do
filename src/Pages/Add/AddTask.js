@@ -20,7 +20,7 @@ const AddTask = () => {
         const tasKDetail = {email: user.email, title, detail, imageLink, completed, date, time}
 
         console.log(tasKDetail);
-        fetch('http://localhost:5000/tasks', {
+        fetch('https://task-manager-server-kappa.vercel.app/tasks', {
                 method: 'POST',
                 headers: {
                     'content-type': 'application/json'
