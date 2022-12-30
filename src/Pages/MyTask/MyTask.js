@@ -25,7 +25,8 @@ const MyTask = () => {
     })
 
     const handleDetails = id => {
-        fetch(`https://task-manager-server-kappa.vercel.app/tasks/false/${id}`)
+        setDetails(null);
+        fetch(`https://task-manager-server-kappa.vercel.app/task/${id}`)
         .then(res => res.json())
         .then(data => setDetails(data));
 
@@ -83,6 +84,7 @@ const MyTask = () => {
                             <Modal.Header closeButton>
                             <Modal.Title>{details?.title}</Modal.Title>
                             </Modal.Header>
+                            <img className='img-fluid' src={details?.imageLink} alt=''/>
                             <Modal.Body>{details?.detail}</Modal.Body>
                             <Modal.Body>{details?.date}</Modal.Body>
                             <Modal.Body>{details?.time}</Modal.Body>

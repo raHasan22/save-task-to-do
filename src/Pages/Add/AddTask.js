@@ -23,7 +23,7 @@ const AddTask = () => {
         fetch('https://task-manager-server-kappa.vercel.app/tasks', {
                 method: 'POST',
                 headers: {
-                    'content-type': 'application/json'
+                    'content-type': 'application/json',
                 },
                 body: JSON.stringify(tasKDetail)
             })

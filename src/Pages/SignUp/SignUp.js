@@ -1,3 +1,4 @@
+import { GoogleAuthProvider } from 'firebase/auth';
 import React, { useContext } from 'react';
 import { toast } from 'react-hot-toast';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -5,7 +6,8 @@ import { AuthContext } from '../../context/AuthProvider';
 
 const SignUp = () => {
 
-    const { createUser } = useContext(AuthContext);
+    const { createUser, googleSignUp } = useContext(AuthContext);
+    const googleProvider = new GoogleAuthProvider();
     const location = useLocation();
     const navigate = useNavigate();
   
@@ -28,6 +30,16 @@ const SignUp = () => {
         });
     };
 
+    const handleGoogleLogin = () =>{
+        googleSignUp(googleProvider)
+        .then(result => {
+            const user = result.user;
+            toast.success(`${user.email} Log in Successful`);
+        })
+        .catch(error => {})
+    }
+
+
     return (
         <div className='mx-5 m w-75 mx-auto'>
         <div className='my-5'>
@@ -46,7 +58,7 @@ const SignUp = () => {
             <p className='text-center'>Already have an account?<Link to='/login'>log in</Link></p>
             
         </form>
-        <button className='btn btn-outline-warning btn-lg mb-4 mbd-block w-100'>Google</button>
+            <button onClick={handleGoogleLogin} className='btn btn-outline-warning btn-lg mb-4 mbd-block w-100'>Google</button>
     </div>
     );
 };

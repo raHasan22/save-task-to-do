@@ -1,13 +1,17 @@
 import { useQuery } from '@tanstack/react-query';
-import React, { useContext } from 'react';
-import { Button, Card } from 'react-bootstrap';
+import React, { useContext, useState } from 'react';
+import { Button, Card, Modal } from 'react-bootstrap';
 import { AuthContext } from '../../context/AuthProvider';
 import { FaCheck,FaTimes } from "react-icons/fa";
 import { toast } from 'react-hot-toast';
 
 const Completed = () => {
-    const { user } = useContext(AuthContext);
-    
+    const [show, setShow] = useState(false);
+    const [details, setDetails] = useState(null)
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const { user } = useContext(AuthContext);
     const url = `https://task-manager-server-kappa.vercel.app/tasks/true?email=${user?.email}`;
 
     const { data: tasks = [], refetch } = useQuery({
@@ -18,6 +22,15 @@ const Completed = () => {
             return data;
         }
     })
+
+    const handleComDetails = id => {
+        setDetails(null);
+        fetch(`https://task-manager-server-kappa.vercel.app/task/${id}`)
+        .then(res => res.json())
+        .then(data => setDetails(data));
+
+        handleShow();
+    }
 
     const handleComTaskDelete = id => {
         fetch(`https://task-manager-server-kappa.vercel.app/tasks/delete/${id}`,{
@@ -56,13 +69,27 @@ const Completed = () => {
                         <Card.Title>{task.title}</Card.Title>
                         
                         <div className='d-flex flex-row justify-content-between'>
-                        <Button variant="primary">Details</Button>
+                        <Button onClick={() => handleComDetails(task._id)} variant="primary">Details</Button>
                         <Button onClick={() => handleNotCompleted(task._id)} variant="success"><FaCheck></FaCheck> No Done</Button>
                         <Button onClick={() => handleComTaskDelete(task._id)} variant="danger"><FaTimes></FaTimes> Delete</Button>
                         </div>
                     </Card.Body>
                     </Card>)}
             </div>
+            <Modal show={show} onHide={handleClose}>
+                            <Modal.Header closeButton>
+                            <Modal.Title>{details?.title}</Modal.Title>
+                            </Modal.Header>
+                            <img className='img-fluid' src={details?.imageLink} alt=''/>
+                            <Modal.Body>{details?.detail}</Modal.Body>
+                            <Modal.Body>{details?.date}</Modal.Body>
+                            <Modal.Body>{details?.time}</Modal.Body>
+                            <Modal.Footer>
+                            <Button variant="secondary" onClick={handleClose}>
+                                Close
+                            </Button>
+                            </Modal.Footer>
+                        </Modal>
         </div>
     );
 };
