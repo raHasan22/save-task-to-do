@@ -56,7 +56,7 @@ const AddTask = () => {
                 <label htmlFor="floatingTextarea2">Details</label>
                 </div>
                 <div className="form-floating mb-3">
-                    <input name='imageLink' type='text' className='form-control add-task' id='floatingLink' placeholder='Image Link' required></input>
+                    <input name='imageLink' type='text' className='form-control add-task' id='floatingLink' placeholder='Image Link'></input>
                     <label htmlFor='floatingLink'>Add Image Link if Needed</label>
                 </div>
                 <div className="form-floating mb-3" style={{display:'none'}}>
